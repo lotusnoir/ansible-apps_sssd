@@ -1,0 +1,14 @@
+{% for domain in sssd_conf_domains %} 
+[domain/{{ domain.name }}]
+{{ domain.content }}
+{% endfor %}
+
+{% if sssd_conf_sssd | length > 0 %}
+[sssd]
+{{ sssd_conf_sssd }}
+{% endif %}
+
+{% if sssd_conf_pam | length > 0 %} 
+[pam]
+{{ sssd_conf_pam }}
+{% endif %}

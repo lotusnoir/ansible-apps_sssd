@@ -1,0 +1,56 @@
+---
+- name: "Install requirements"
+  ansible.builtin.package:
+    name: "{{ sssd_pkg }}"
+    state: present
+
+#- name: "Disable sssd sub sockets"
+#  ansible.builtin.service:
+#    name: "{{ item }}"
+#    enabled: no
+#  with_items:
+#    - sssd-ssh.socket
+#    - sssd-sudo.socket
+#    - sssd-nss.socket
+#    - sssd-pam.socket
+#    - sssd-pam-priv.socket
+#    - sssd-pac.socket
+#    - sssd-autofs.socket
+#  when: ansible_distribution_release == "bullseye"
+
+#- name: "Configuring nssswitch"
+#  ansible.builtin.template:
+#    src: user-nsswitch.conf.j2
+#    dest: /etc/authselect/user-nsswitch.conf
+#    owner: root
+#    group: root
+#    mode: "0644"
+#  become: true
+#  notify: restart sssd
+#  when: ansible_os_family == "RedHat"
+#
+#- name: "Run client install"
+#  ansible.builtin.command: "authselect select sssd with-custom-passwd with-custom-group --force"
+#  changed_when: false
+#  when: ansible_os_family == "RedHat"
+#
+#- name: "Clear sssd Cache"
+#  ansible.builtin.command: "sss_cache -E"
+#  changed_when: false
+#  when: ansible_os_family == "RedHat"
+
+- name: "Configuring sssd"
+  ansible.builtin.template:
+    src: sssd.conf.j2
+    dest: /etc/sssd/sssd.conf
+    owner: root
+    group: root
+    mode: "0600"
+  become: true
+  notify: restart sssd
+
+- name: "Enable and start sssd"
+  ansible.builtin.service:
+    name: sssd
+    enabled: true
+    state: started
