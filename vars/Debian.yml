@@ -6,3 +6,4 @@ sssd_pkg:
   - ldb-tools
   - libpam-sss
   - libnss-sss
+  - libsss-sudo

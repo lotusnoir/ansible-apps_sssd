@@ -49,19 +49,43 @@
   become: true
   notify: restart sssd
 
-- name: Query SSSD in nsswitch.conf
-  ansible.builtin.replace:
+- name: "Configuring nsswitch"
+  ansible.builtin.template:
+    src: nsswitch.conf.j2
     dest: /etc/nsswitch.conf
-    regexp: '^({{ item }}(?!.*\bsss\b).*)$'
-    replace: '\1 sss'
-    backup: true
-  with_items:
-    - passwd
-    - shadow
-    - group
-    - sudoers
-    - services
-    - netgroup
+    owner: root
+    group: root
+    mode: "0600"
+  become: true
+  notify: restart sssd
+
+  #- name: "Ensure nssswitch contains all services"
+  #  ansible.builtin.lineinfile:
+  #    dest: "/etc/nsswitch.conf"
+  #    regexp: "^{{ item }}(.*)$"
+  #    line: '{{ item }}\1'
+  #    state: present
+  #  with_items:
+  #    - passwd
+  #    - shadow
+  #    - group
+  #    - sudoers
+  #    - services
+  #    - netgroup
+  #
+  #- name: Query SSSD in nsswitch.conf
+  #  ansible.builtin.replace:
+  #    dest: /etc/nsswitch.conf
+  #    regexp: '^({{ item }}(?!.*\bsss\b).*)$'
+  #    replace: '\1 sss'
+  #    backup: true
+  #  with_items:
+  #    - passwd
+  #    - shadow
+  #    - group
+  #    - sudoers
+  #    - services
+  #    - netgroup
 
 - name: "Create homedir automatically"
   ansible.builtin.lineinfile:
