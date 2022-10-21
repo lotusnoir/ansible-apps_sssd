@@ -1,0 +1,8 @@
+---
+sssd_pkg:
+  - sssd
+  - sssd-ldap
+  - sssd-tools
+  - ldb-tools
+  - libpam-sss
+  - libnss-sss

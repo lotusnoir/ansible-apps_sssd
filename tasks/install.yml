@@ -7,7 +7,7 @@
 #- name: "Disable sssd sub sockets"
 #  ansible.builtin.service:
 #    name: "{{ item }}"
-#    enabled: no
+#    enabled: false
 #  with_items:
 #    - sssd-ssh.socket
 #    - sssd-sudo.socket
@@ -48,6 +48,29 @@
     mode: "0600"
   become: true
   notify: restart sssd
+
+- name: Query SSSD in nsswitch.conf
+  ansible.builtin.replace:
+    dest: /etc/nsswitch.conf
+    regexp: '^({{ item }}(?!.*\bsss\b).*)$'
+    replace: '\1 sss'
+    backup: true
+  with_items:
+    - passwd
+    - shadow
+    - group
+    - sudoers
+    - services
+    - netgroup
+
+- name: "Create homedir automatically"
+  ansible.builtin.lineinfile:
+    dest: "/etc/pam.d/common-session"
+    regexp: "^session required        pam_mkhomedir.so"
+    insertafter: '^session optional            pam_sss.so'
+    line: "session required        pam_mkhomedir.so skel=/etc/skel/ umask=0022"
+    state: present
+  when: ansible_os_family == "Debian"
 
 - name: "Enable and start sssd"
   ansible.builtin.service:

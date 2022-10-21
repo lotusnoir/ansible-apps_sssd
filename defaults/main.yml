@@ -7,7 +7,7 @@ sssd_conf_domains:
       access_provider = ldap
       cache_credentials = False
       entry_cache_timeout = 0
-      ldap_uri = ldap:///10.1.0.189
+      ldap_uri = ldap://10.1.0.189, ldap://10.1.0.192
       ldap_schema = rfc2307bis
       ldap_default_bind_dn = cn=app-pam-nss,ou=applications,ou=users,dc=test,dc=fr
       ldap_default_authtok = pam
@@ -23,7 +23,7 @@ sssd_conf_domains:
       access_provider = ldap
       cache_credentials = False
       entry_cache_timeout = 0
-      ldap_uri = ldap:///10.1.0.192
+      ldap_uri = ldap://13.145.0.21
       ldap_schema = rfc2307bis
       ldap_default_bind_dn = cn=app-pam-nss,ou=applications,ou=users,dc=test,dc=fr
       ldap_default_authtok = pam
