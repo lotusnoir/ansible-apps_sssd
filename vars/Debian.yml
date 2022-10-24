@@ -7,3 +7,5 @@ sssd_pkg:
   - libpam-sss
   - libnss-sss
   - libsss-sudo
+
+sssd_nsswitch_path: /etc/nsswitch.conf

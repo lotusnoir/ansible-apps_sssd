@@ -18,27 +18,6 @@
 #    - sssd-autofs.socket
 #  when: ansible_distribution_release == "bullseye"
 
-#- name: "Configuring nssswitch"
-#  ansible.builtin.template:
-#    src: user-nsswitch.conf.j2
-#    dest: /etc/authselect/user-nsswitch.conf
-#    owner: root
-#    group: root
-#    mode: "0644"
-#  become: true
-#  notify: restart sssd
-#  when: ansible_os_family == "RedHat"
-#
-#- name: "Run client install"
-#  ansible.builtin.command: "authselect select sssd with-custom-passwd with-custom-group --force"
-#  changed_when: false
-#  when: ansible_os_family == "RedHat"
-#
-#- name: "Clear sssd Cache"
-#  ansible.builtin.command: "sss_cache -E"
-#  changed_when: false
-#  when: ansible_os_family == "RedHat"
-
 - name: "Configuring sssd"
   ansible.builtin.template:
     src: sssd.conf.j2
@@ -49,45 +28,18 @@
   become: true
   notify: restart sssd
 
-- name: "Configuring nsswitch"
+- name: "DEBIAN | Configuring nsswitch"
   ansible.builtin.template:
     src: nsswitch.conf.j2
-    dest: /etc/nsswitch.conf
+    dest: "{{ sssd_nsswitch_path }}"
     owner: root
     group: root
     mode: "0644"
   become: true
   notify: restart sssd
+  when: ansible_os_family == "Debian"
 
-  #- name: "Ensure nssswitch contains all services"
-  #  ansible.builtin.lineinfile:
-  #    dest: "/etc/nsswitch.conf"
-  #    regexp: "^{{ item }}(.*)$"
-  #    line: '{{ item }}\1'
-  #    state: present
-  #  with_items:
-  #    - passwd
-  #    - shadow
-  #    - group
-  #    - sudoers
-  #    - services
-  #    - netgroup
-  #
-  #- name: Query SSSD in nsswitch.conf
-  #  ansible.builtin.replace:
-  #    dest: /etc/nsswitch.conf
-  #    regexp: '^({{ item }}(?!.*\bsss\b).*)$'
-  #    replace: '\1 sss'
-  #    backup: true
-  #  with_items:
-  #    - passwd
-  #    - shadow
-  #    - group
-  #    - sudoers
-  #    - services
-  #    - netgroup
-
-- name: "Create homedir automatically"
+- name: "DEBIAN | Create homedir automatically"
   ansible.builtin.lineinfile:
     dest: "/etc/pam.d/common-session"
     regexp: "^session required        pam_mkhomedir.so"
@@ -95,6 +47,17 @@
     line: "session required        pam_mkhomedir.so skel=/etc/skel/ umask=0022"
     state: present
   when: ansible_os_family == "Debian"
+
+- name: "REDHAT | Switch auth provider to sssd"
+  ansible.builtin.command: "authconfig --update --enablesssd --enablesssdauth"
+  changed_when: false
+  notify: restart sssd
+  when: ansible_os_family == "RedHat"
+
+- name: "REDHAT | Clear sssd Cache"
+  ansible.builtin.command: "sss_cache -E"
+  changed_when: false
+  when: ansible_os_family == "RedHat"
 
 - name: "Enable and start sssd"
   ansible.builtin.service:

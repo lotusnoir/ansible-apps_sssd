@@ -40,3 +40,7 @@ sssd_conf_sssd: |
 
 sssd_conf_pam: |
   account_cache_expiration = 1
+
+sssd_conf_nss: |
+  fallback_homedir = /home/%u
+  default_shell = /bin/bash

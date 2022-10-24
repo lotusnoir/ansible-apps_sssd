@@ -12,3 +12,8 @@
 [pam]
 {{ sssd_conf_pam }}
 {% endif %}
+
+{% if sssd_conf_nss | length > 0 %} 
+[pam]
+{{ sssd_conf_nss }}
+{% endif %}
