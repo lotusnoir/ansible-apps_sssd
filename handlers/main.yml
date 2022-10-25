@@ -3,3 +3,7 @@
   ansible.builtin.service:
     name: sssd
     state: restarted
+
+- name: "restart oddjobd"
+  ansible.builtin.service:
+    name: oddjobd
