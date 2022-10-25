@@ -31,7 +31,7 @@
 - name: "DEBIAN | Configuring nsswitch"
   ansible.builtin.template:
     src: nsswitch.conf.j2
-    dest: "{{ sssd_nsswitch_path }}"
+    dest: "/etc/nsswitch.conf"
     owner: root
     group: root
     mode: "0644"

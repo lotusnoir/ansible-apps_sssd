@@ -39,7 +39,10 @@ sssd_conf_sssd: |
   domains = ldap1, ldap2
 
 sssd_conf_pam: |
-  account_cache_expiration = 1
+  reconnection_retries = 3
+  offline_credentials_expiration = 2
+  offline_failed_login_attempts = 3
+  offline_failed_login_delay = 5
 
 sssd_conf_nss: |
   fallback_homedir = /home/%u
