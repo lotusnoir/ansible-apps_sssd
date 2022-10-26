@@ -4,20 +4,6 @@
     name: "{{ sssd_pkg }}"
     state: present
 
-#- name: "Disable sssd sub sockets"
-#  ansible.builtin.service:
-#    name: "{{ item }}"
-#    enabled: false
-#  with_items:
-#    - sssd-ssh.socket
-#    - sssd-sudo.socket
-#    - sssd-nss.socket
-#    - sssd-pam.socket
-#    - sssd-pam-priv.socket
-#    - sssd-pac.socket
-#    - sssd-autofs.socket
-#  when: ansible_distribution_release == "bullseye"
-
 - name: "Configuring sssd"
   ansible.builtin.template:
     src: sssd.conf.j2
@@ -28,60 +14,16 @@
   become: true
   notify: restart sssd
 
-- name: "DEBIAN | Configuring nsswitch"
-  ansible.builtin.template:
-    src: nsswitch.conf.j2
-    dest: "/etc/nsswitch.conf"
-    owner: root
-    group: root
-    mode: "0644"
-  become: true
-  notify: restart sssd
-  when: ansible_os_family == "Debian"
+- name: Import tasks for debian
+  ansible.builtin.import_tasks: setup-debian.yml
+  when: ansible_os_family == 'Debian'
 
-- name: "DEBIAN | Create homedir automatically"
-  ansible.builtin.lineinfile:
-    path: "/etc/pam.d/common-session"
-    regexp: "^session required        pam_mkhomedir.so"
-    insertafter: '^session optional            pam_sss.so'
-    line: "session required        pam_mkhomedir.so skel=/etc/skel/ umask=0022"
-    state: present
-  when: ansible_os_family == "Debian"
-
-- name: "REDHAT | Switch auth provider to sssd"
-  ansible.builtin.command: "authconfig --update --enablesssd --enablesssdauth --enablemkhomedir"
-  changed_when: false
-  notify: restart sssd
-  when: ansible_os_family == "RedHat"
-
-- name: "REDHAT | Clear sssd Cache"
-  ansible.builtin.command: "sss_cache -E"
-  changed_when: false
-  when: ansible_os_family == "RedHat"
-
-- name: "REDHAT | Add sudoers on nsswitch"
-  ansible.builtin.lineinfile:
-    path: "/etc/authselect/user-nsswitch.conf"
-    regexp: "^sudoers:"
-    line: "sudoers:    files sss"
-    state: present
-  notify: restart sssd
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8'
-
-- name: "REDHAT | Add sudoers on nsswitch"
-  ansible.builtin.lineinfile:
-    path: "/etc/nsswitch.conf"
-    regexp: "^sudoers:"
-    line: "sudoers:    files sss"
-    state: present
-  notify: restart sssd
+- name: Import tasks for redhat7
+  ansible.builtin.import_tasks: setup-redhat7.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
-- name: "Enable and start oddjobd"
-  ansible.builtin.service:
-    name: oddjobd
-    enabled: true
-    state: started
+- name: Import tasks for redhat8
+  ansible.builtin.import_tasks: setup-redhat8.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8'
 
 - name: "Enable and start sssd"

@@ -1,0 +1,23 @@
+---
+- name: "REDHAT-8 | Switch auth provider to sssd"
+  ansible.builtin.command: "authconfig --update --enablesssd --enablesssdauth --enablemkhomedir"
+  changed_when: false
+  notify: restart sssd
+
+- name: "REDHAT-8 | Clear sssd Cache"
+  ansible.builtin.command: "sss_cache -E"
+  changed_when: false
+
+- name: "REDHAT-8 | Add sudoers on nsswitch"
+  ansible.builtin.lineinfile:
+    path: "/etc/authselect/user-nsswitch.conf"
+    regexp: "^sudoers:"
+    line: "sudoers:    files sss"
+    state: present
+  notify: restart sssd
+
+- name: "REDHAT-8 | Enable and start oddjobd"
+  ansible.builtin.service:
+    name: oddjobd
+    enabled: true
+    state: started
