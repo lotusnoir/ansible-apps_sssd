@@ -59,14 +59,14 @@
   changed_when: false
   when: ansible_os_family == "RedHat"
 
-#- name: "REDHAT | Create homedir automatically"
-#  ansible.builtin.lineinfile:
-#    path: "/etc/authselect/system-auth"
-#    regexp: "^session optional pam_oddjob_mkhomedir.so"
-#    line: "session optional pam_oddjob_mkhomedir.so skel=/etc/skel/ umask=0022"
-#    state: present
-#  notify: restart oddjobd
-#  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8'
+- name: "REDHAT | Create homedir automatically"
+  ansible.builtin.lineinfile:
+    path: "/etc/authselect/user-nsswitch.conf"
+    regexp: "^sudoers:    files sss"
+    line: "sudoers:    files sss"
+    state: present
+  notify: restart sssd
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8'
 
 - name: "Enable and start oddjobd"
   ansible.builtin.service:
