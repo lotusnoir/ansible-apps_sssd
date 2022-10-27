@@ -1,4 +1,6 @@
 ---
+sssd_pam_devsec_config: false
+
 sssd_conf_domains:
   - name: ldap1
     content: |
