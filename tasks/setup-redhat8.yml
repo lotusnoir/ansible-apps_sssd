@@ -11,10 +11,9 @@
 - name: "REDHAT-8 | Add sudoers on nsswitch"
   ansible.builtin.lineinfile:
     path: "/etc/authselect/user-nsswitch.conf"
-    regexp: "^sudoers:"
     line: "sudoers:    files sss"
     state: present
-  notify: restart sssd
+  notify: authselect apply-changes
 
 - name: "REDHAT-8 | Enable and start oddjobd"
   ansible.builtin.service:
