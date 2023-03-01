@@ -2,7 +2,7 @@
 galaxy_info:
   author: lotusnoir
   role_name: apps_sssd
-  description: "Install sssd in order to check ldap server for ssh login."
+  description: "Install and configure sssd in order to connect with ldap support"
   license: "Apache License, Version 2.0"
   min_ansible_version: 2.8
 
@@ -14,8 +14,8 @@ galaxy_info:
         - "jammy"
     - name: "Debian"
       versions:
-        - "bullseye"
         - "buster"
+        - "bullseye"
     - name: "RedHat"
       versions:
         - "Maipo"
@@ -26,11 +26,11 @@ galaxy_info:
       versions:
         - "7"
         - "8"
+        - "9"
 
   galaxy_tags:
+    - ssh
     - sssd
     - ldap
-    - ssh
-    - login
 
 dependencies: []

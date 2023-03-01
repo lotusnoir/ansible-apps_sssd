@@ -9,7 +9,7 @@
 [![Ansible Quality Score](https://img.shields.io/ansible/quality/)](https://galaxy.ansible.com/lotusnoir/apps_sssd)
 [![License](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat)](https://opensource.org/licenses/Apache-2.0)
 
-Install sssd in order to check ldap server for ssh login.
+Install and configure sssd in order to connect with ldap support
 
 ## Requirements
 
