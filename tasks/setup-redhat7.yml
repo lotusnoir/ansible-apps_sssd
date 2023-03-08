@@ -61,7 +61,6 @@
     - "/etc/pam.d/password-auth"
   when: not sssd_pam_devsec_config|bool
 
-
 - name: "REDHAT-7 | Enable and start oddjobd"
   ansible.builtin.service:
     name: oddjobd

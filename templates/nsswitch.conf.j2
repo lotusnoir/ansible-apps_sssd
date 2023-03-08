@@ -24,40 +24,6 @@
 # To use db, put the "db" in front of "files" for entries you want to be
 # looked up first in the databases
 #
-# Example:
-#passwd:    db files nisplus nis
-#shadow:    db files nisplus nis
-#group:     db files nisplus nis
-
-passwd:     files sss
-shadow:     files sss
-group:      files sss
-sudoers:    files sss
-#initgroups: files
-
-#hosts:     db files nisplus nis dns
-hosts:      files dns
-
-# Example - obey only what nisplus tells us...
-#services:   nisplus [NOTFOUND=return] files
-#networks:   nisplus [NOTFOUND=return] files
-#protocols:  nisplus [NOTFOUND=return] files
-#rpc:        nisplus [NOTFOUND=return] files
-#neters:     nisplus [NOTFOUND=return] files
-#netmasks:   nisplus [NOTFOUND=return] files
-
-bootparams: nisplus [NOTFOUND=return] files
-
-neters:     files
-netmasks:   files
-networks:   files
-protocols:  files
-rpc:        files
-services:   files sss
-
-netgroup:   files sss
-
-publickey:  nisplus
-
-automount:  files
-aliases:    files nisplus
+{% for k,v in sssd_nssswitch_config.items() %}
+{{ k }}: {{ v }}
+{% endfor %}

@@ -3,17 +3,17 @@
 {{ domain.content }}
 {% endfor %}
 
-{% if sssd_conf_sssd | length > 0 %}
+{% if sssd_conf_sssd is defined and sssd_conf_sssd | length > 0 %}
 [sssd]
 {{ sssd_conf_sssd }}
 {% endif %}
 
-{% if sssd_conf_pam | length > 0 %} 
+{% if sssd_conf_pam is defined and sssd_conf_pam | length > 0 %} 
 [pam]
 {{ sssd_conf_pam }}
 {% endif %}
 
-{% if sssd_conf_nss | length > 0 %} 
+{% if sssd_conf_nss is defined and sssd_conf_nss | length > 0 %} 
 [nss]
 {{ sssd_conf_nss }}
 {% endif %}

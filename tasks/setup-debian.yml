@@ -1,5 +1,5 @@
 ---
-- name: "Disable sssd sub sockets"
+- name: "DEBIAN | Disable sssd sub sockets"
   ansible.builtin.service:
     name: "{{ item }}"
     enabled: false
@@ -11,7 +11,10 @@
     - sssd-pam-priv.socket
     - sssd-pac.socket
     - sssd-autofs.socket
-  when: ansible_distribution_release == "bullseye"
+  when:
+    - ansible_distribution_release == "bullseye"
+    - sssd_disable_svc_socket is defined
+    - sssd_disable_svc_socket|bool
 
 - name: "DEBIAN | Configuring nsswitch"
   ansible.builtin.template:
@@ -21,6 +24,9 @@
     group: root
     mode: "0644"
   become: true
+  when:
+    - sssd_nssswitch_config is defined
+    - sssd_nssswitch_config | length > 0
   notify: restart sssd
 
 - name: "DEBIAN | Create homedir automatically"
@@ -30,3 +36,7 @@
     insertafter: '^session optional            pam_sss.so'
     line: "session required        pam_mkhomedir.so skel=/etc/skel/ umask=0022"
     state: present
+  when:
+    - sssd_create_homedir is defined
+    - sssd_create_homedir|bool
+  notify: restart sssd

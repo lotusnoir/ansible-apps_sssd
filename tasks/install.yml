@@ -12,6 +12,9 @@
     group: root
     mode: "0600"
   become: true
+  when:
+    - sssd_conf_domains is defined
+    - sssd_conf_domains | length > 0
   notify: restart sssd
 
 - name: Import tasks for debian
@@ -31,3 +34,6 @@
     name: sssd
     enabled: true
     state: started
+  when:
+    - sssd_svc_start is defined
+    - sssd_svc_start|bool

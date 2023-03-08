@@ -1,6 +1,6 @@
 ---
 - name: "REDHAT-8 | Switch auth provider to sssd"
-  ansible.builtin.command: "authconfig --update --enablesssd --enablesssdauth --enablemkhomedir"
+  ansible.builtin.command: "authconfig --update --enablesssd --enablesssdauth{% if sssd_create_homedir is sameas true %} --enablemkhomedir{% endif %}"
   changed_when: false
   notify: restart sssd
 
