@@ -26,8 +26,8 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
 - name: Import tasks for redhat8
-  ansible.builtin.import_tasks: setup-redhat8.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8'
+  ansible.builtin.import_tasks: setup-redhat.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version >= '8'
 
 - name: "Enable and start sssd"
   ansible.builtin.service:
