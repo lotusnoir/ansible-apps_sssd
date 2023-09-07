@@ -1,9 +1,13 @@
 ---
 sssd_pam_devsec_config: false
 sssd_svc_start: true
+## Debian only
+sssd_create_homedir: true
+sssd_change_umask: false
+## end
+sssd_umask: "027"
 
 sssd_disable_svc_socket: false
-sssd_create_homedir: false
 #sssd_nssswitch_config:
 #  passwd:     files sss
 #  shadow:     files sss
@@ -31,7 +35,7 @@ sssd_create_homedir: false
 #      access_provider = ldap
 #      cache_credentials = False
 #      entry_cache_timeout = 0
-#      ldap_uri = ldap://10.1.0.189, ldap://10.1.0.192
+#      ldap_uri = ldap://10.1.2.3, ldap://10.1.2.4
 #      ldap_schema = rfc2307bis
 #      ldap_default_bind_dn = cn=app-pam-nss,ou=applications,ou=users,dc=test,dc=fr
 #      ldap_default_authtok = pam

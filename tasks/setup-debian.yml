@@ -34,9 +34,21 @@
     path: "/etc/pam.d/common-session"
     regexp: "^session required        pam_mkhomedir.so"
     insertafter: '^session optional            pam_sss.so'
-    line: "session required        pam_mkhomedir.so skel=/etc/skel/ umask=0022"
+    line: "session required        pam_mkhomedir.so skel=/etc/skel/ umask={{ sssd_umask }}"
     state: present
   when:
     - sssd_create_homedir is defined
     - sssd_create_homedir|bool
+  notify: restart sssd
+
+- name: "DEBIAN | Change default umask"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/common-session"
+    regexp: "^session    optional     pam_umask.so umask=077"
+    insertbefore: '^session optional            pam_sss.so'
+    line: "session    optional     pam_umask.so umask={{ sssd_umask }}"
+    state: present
+  when:
+    - sssd_change_umask is defined
+    - sssd_change_umask | bool
   notify: restart sssd

@@ -25,7 +25,7 @@
   ansible.builtin.import_tasks: setup-redhat7.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
-- name: Import tasks for redhat8
+- name: Import tasks for redhat >= 8
   ansible.builtin.import_tasks: setup-redhat.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version >= '8'
 
