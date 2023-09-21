@@ -4,11 +4,6 @@
   become: true
   any_errors_fatal: true
 
-  tasks:
-    - name: Include role
-      ansible.builtin.include_role:
-        name: ansible-apps_sssd
-
   vars:
     sssd_svc_start: true
     sssd_disable_svc_socket: false
@@ -57,3 +52,8 @@
       override_homedir = /home/%u
       fallback_homedir = /home/%u
       default_shell = /bin/bash
+
+  tasks:
+    - name: Include role
+      ansible.builtin.include_role:
+        name: ansible-apps_sssd

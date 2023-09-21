@@ -18,15 +18,15 @@
   notify: restart sssd
 
 - name: Import tasks for debian
-  ansible.builtin.import_tasks: setup-debian.yml
+  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
   when: ansible_os_family == 'Debian'
 
 - name: Import tasks for redhat7
-  ansible.builtin.import_tasks: setup-redhat7.yml
+  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}7.yml"
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
 - name: Import tasks for redhat >= 8
-  ansible.builtin.import_tasks: setup-redhat.yml
+  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version >= '8'
 
 - name: "Enable and start sssd"
