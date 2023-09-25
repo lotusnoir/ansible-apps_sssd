@@ -34,6 +34,7 @@ With default variables, this role just install the package sssd. You need to set
 
 ## Examples
 
+
         ---
         - hosts: apps_sssd
           become: true
