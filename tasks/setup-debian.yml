@@ -33,7 +33,7 @@
   ansible.builtin.lineinfile:
     path: "/etc/pam.d/common-session"
     regexp: "^session required        pam_mkhomedir.so"
-    insertafter: '^session optional            pam_sss.so'
+    insertbefore: '^session [default=1]'
     line: "session required        pam_mkhomedir.so skel=/etc/skel/ umask={{ sssd_umask }}"
     state: present
   when:
