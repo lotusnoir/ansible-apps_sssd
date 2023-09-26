@@ -1,4 +1,14 @@
 ---
+- name: "REDHAT-8+ | Oddjob by default doesnt not create home with skel and umask"
+  ansible.builtin.lineinfile:
+    path: "/usr/lib/systemd/system/oddjobd.service"
+    regexp: '^ExecStart=/usr/sbin/oddjobd'
+    line: 'ExecStart=/usr/sbin/oddjobd -p /run/oddjobd.pid -t 300'
+    state: present
+  notify:
+    - reload oddjob service
+    - restart oddjobd
+
 - name: "REDHAT-8+ | Switch auth provider to sssd"
   ansible.builtin.command: "authconfig --update --enablesssd --enablesssdauth{% if sssd_create_homedir is sameas true %} --enablemkhomedir{% endif %}"
   changed_when: false
@@ -20,3 +30,11 @@
     name: oddjobd
     enabled: true
     state: started
+
+#- name: "REDHAT-8+ | Add skel on user mkdir"
+#  ansible.builtin.lineinfile:
+#    path: "/etc/pam.d/system-auth"
+#    regexp: '^(.*)pam_oddjob_mkhomedir.so$'
+#    line: '\1am_oddjob_mkhomedir.so skel=/etc/skel/ umask=002'
+#    backrefs: true
+#    state: present
