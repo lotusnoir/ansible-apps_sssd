@@ -7,7 +7,7 @@
     state: present
   notify:
     - reload oddjob service
-    - restart oddjobd
+    - start oddjobd
 
 - name: "REDHAT-8+ | Switch auth provider to sssd"
   ansible.builtin.command: "authconfig --update --enablesssd --enablesssdauth{% if sssd_create_homedir is sameas true %} --enablemkhomedir{% endif %}"
