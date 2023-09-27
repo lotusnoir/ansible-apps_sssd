@@ -32,9 +32,9 @@
 - name: "DEBIAN | Create homedir automatically"
   ansible.builtin.lineinfile:
     path: "/etc/pam.d/common-session"
-    regexp: "^session required        pam_mkhomedir.so"
-    insertbefore: '^session [default=1]'
+    regexp: "^session required(.*)pam_mkhomedir.so(.*)$"
     line: "session required        pam_mkhomedir.so skel=/etc/skel/ umask={{ sssd_umask }}"
+    insertbefore: '^session(.*)default'
     state: present
   when:
     - sssd_create_homedir is defined
