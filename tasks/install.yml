@@ -3,6 +3,10 @@
   ansible.builtin.package:
     name: "{{ sssd_pkg }}"
     state: present
+  register: pkg_result
+  retries: 12
+  delay: 10
+  until: pkg_result is success
 
 - name: "Configuring sssd"
   ansible.builtin.template:
