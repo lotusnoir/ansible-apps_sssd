@@ -22,7 +22,6 @@ galaxy_info:
         - "8"
     - name: "OracleLinux"
       versions:
-        - "7"
         - "8"
         - "9"
 
