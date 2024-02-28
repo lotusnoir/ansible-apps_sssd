@@ -52,3 +52,34 @@
     - sssd_change_umask is defined
     - sssd_change_umask | bool
   notify: restart sssd
+
+- name: Creates disable directory for apparmor
+  ansible.builtin.file:
+    path: /etc/apparmor.d/disable
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  when:
+    - sssd_unset_apparmor is defined
+    - sssd_unset_apparmor | bool
+
+- name: Add sssd in disable folder
+  ansible.builtin.file:
+    src: /etc/apparmor.d/usr.sbin.sssd
+    dest: /etc/apparmor.d/disable/usr.sbin.sssd
+    owner: root
+    group: root
+    state: link
+    force: true
+  when:
+    - sssd_unset_apparmor is defined
+    - sssd_unset_apparmor | bool
+
+- name: Remove rule from apparmor
+  ansible.builtin.shell: apparmor_parser -R /etc/apparmor.d/usr.sbin.sssd
+  args:
+    executable: /bin/bash
+  when:
+    - sssd_unset_apparmor is defined
+    - sssd_unset_apparmor | bool

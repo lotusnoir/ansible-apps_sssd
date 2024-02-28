@@ -1,4 +1,5 @@
 ---
+sssd_unset_apparmor: false
 sssd_pam_devsec_config: false
 sssd_svc_start: true
 ## Debian only
