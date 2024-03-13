@@ -5,7 +5,7 @@
     regexp: "^sudoers:"
     line: "sudoers:    files sss"
     state: present
-  notify: restart sssd
+  notify: Restart sssd
 
 - name: "REDHAT-7 | Configure pam"
   ansible.builtin.lineinfile:
@@ -13,7 +13,7 @@
     regexp: "^session     optional      pam_mkhomedir.so"
     line: "session     optional      pam_mkhomedir.so skel=/etc/skel umask={{ sssd_umask }}"
     state: present
-  notify: restart sssd
+  notify: Restart sssd
   with_items:
     - "/etc/pam.d/system-auth-local"
     - "/etc/pam.d/password-auth-local"

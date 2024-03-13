@@ -19,7 +19,7 @@
   when:
     - sssd_conf_domains is defined
     - sssd_conf_domains | length > 0
-  notify: restart sssd
+  notify: Restart sssd
 
 - name: Import tasks for debian
   ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"

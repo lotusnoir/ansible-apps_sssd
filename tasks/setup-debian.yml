@@ -27,7 +27,7 @@
   when:
     - sssd_nssswitch_config is defined
     - sssd_nssswitch_config | length > 0
-  notify: restart sssd
+  notify: Restart sssd
 
 - name: "DEBIAN | Create homedir automatically"
   ansible.builtin.lineinfile:
@@ -39,7 +39,7 @@
   when:
     - sssd_create_homedir is defined
     - sssd_create_homedir|bool
-  notify: restart sssd
+  notify: Restart sssd
 
 - name: "DEBIAN | Change default umask"
   ansible.builtin.lineinfile:
@@ -51,7 +51,7 @@
   when:
     - sssd_change_umask is defined
     - sssd_change_umask | bool
-  notify: restart sssd
+  notify: Restart sssd
 
 - name: Creates disable directory for apparmor
   ansible.builtin.file:
@@ -78,6 +78,8 @@
 
 - name: Remove rule from apparmor
   ansible.builtin.shell: apparmor_parser -R /etc/apparmor.d/usr.sbin.sssd
+  changed_when: false
+  failed_when: false
   args:
     executable: /bin/bash
   when:

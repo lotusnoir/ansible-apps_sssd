@@ -6,13 +6,13 @@
     line: 'ExecStart=/usr/sbin/oddjobd -p /run/oddjobd.pid -t 300'
     state: present
   notify:
-    - reload oddjob service
-    - start oddjobd
+    - "Reload oddjob service"
+    - "Start oddjobd"
 
 - name: "REDHAT-8+ | Switch auth provider to sssd"
   ansible.builtin.command: "authconfig --update --enablesssd --enablesssdauth{% if sssd_create_homedir is sameas true %} --enablemkhomedir{% endif %}"
   changed_when: false
-  notify: restart sssd
+  notify: Restart sssd
 
 - name: "REDHAT-8+ | Clear sssd Cache"
   ansible.builtin.command: "sss_cache -E"
@@ -23,7 +23,7 @@
     path: "/etc/authselect/user-nsswitch.conf"
     line: "sudoers:    files sss"
     state: present
-  notify: authselect apply-changes
+  notify: Authselect apply-changes
 
 - name: "REDHAT-8+ | Enable and start oddjobd"
   ansible.builtin.service:
