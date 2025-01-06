@@ -34,8 +34,8 @@ sssd_disable_svc_socket: false
 #      id_provider = ldap
 #      auth_provider = ldap
 #      access_provider = ldap
-#      cache_credentials = False
-#      entry_cache_timeout = 0
+#      cache_credentials = True
+#      entry_cache_timeout = 5400
 #      ldap_uri = ldap://10.1.2.3, ldap://10.1.2.4
 #      ldap_schema = rfc2307bis
 #      ldap_default_bind_dn = cn=app-pam-nss,ou=applications,ou=users,dc=test,dc=fr
@@ -62,14 +62,14 @@ sssd_disable_svc_socket: false
 #      ldap_id_use_start_tls = True
 #      ldap_tls_reqcert = never
 #sssd_conf_sssd: |
-#  services = nss, pam, sudo
+#  services = nss, pam, sudo, ifp
 #  config_file_version = 2
 #  domains = ldap1, ldap2
 #  debug_level = 0
 #sssd_conf_pam: |
 #  reconnection_retries = 3
-#  offline_credentials_expiration = 2
-#  offline_failed_login_attempts = 3
+#  offline_credentials_expiration = 0
+#  offline_failed_login_attempts = 0
 #  offline_failed_login_delay = 5
 #sssd_conf_nss: |
 #  override_homedir = /home/%u
