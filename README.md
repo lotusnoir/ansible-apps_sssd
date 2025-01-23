@@ -71,13 +71,13 @@ With default variables, this role just install the package sssd. You need to set
                   access_provider = ldap
                   cache_credentials = False
                   entry_cache_timeout = 0
-                  ldap_uri = ldap://10.1.0.189, ldap://10.1.0.192
+                  ldap_uri = ldap://10.1.2.4, ldap://10.1.2.3
                   ldap_schema = rfc2307bis
-                  ldap_default_bind_dn = cn=app-pam-nss,ou=applications,ou=users,dc=test,dc=fr
+                  ldap_default_bind_dn = cn=app,ou=users,dc=test,dc=fr
                   ldap_default_authtok = pam
                   ldap_search_base = dc=test,dc=fr
-                  ldap_access_filter = memberOf=cn={{ ansible_hostname }},ou=roles,ou=pam-nss,ou=applications,dc=test,dc=fr
-                  ldap_sudo_search_base = ou=sudo,cn={{ ansible_hostname }},ou=roles,ou=pam-nss,ou=applications,dc=test,dc=fr
+                  ldap_access_filter = memberOf=cn={{ ansible_hostname }},ou=roles,ou=apps,dc=test,dc=fr
+                  ldap_sudo_search_base = ou=sudo,cn={{ ansible_hostname }},ou=roles,ou=apps,dc=test,dc=fr
                   ldap_id_use_start_tls = True
                   ldap_tls_reqcert = never
 
