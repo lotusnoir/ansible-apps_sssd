@@ -2,8 +2,8 @@
 - name: "REDHAT-8+ | Oddjob by default doesnt not create home with skel and umask"
   ansible.builtin.lineinfile:
     path: "/usr/lib/systemd/system/oddjobd.service"
-    regexp: '^ExecStart=/usr/sbin/oddjobd'
-    line: 'ExecStart=/usr/sbin/oddjobd -p /run/oddjobd.pid -t 300'
+    regexp: "^ExecStart=/usr/sbin/oddjobd"
+    line: "ExecStart=/usr/sbin/oddjobd -p /run/oddjobd.pid -t 300"
     state: present
   notify:
     - "Reload oddjob service"
@@ -30,11 +30,10 @@
     name: oddjobd
     enabled: true
     state: started
-
-#- name: "REDHAT-8+ | Add skel on user mkdir"
-#  ansible.builtin.lineinfile:
-#    path: "/etc/pam.d/system-auth"
-#    regexp: '^(.*)pam_oddjob_mkhomedir.so$'
-#    line: '\1am_oddjob_mkhomedir.so skel=/etc/skel/ umask=002'
-#    backrefs: true
-#    state: present
+# - name: "REDHAT-8+ | Add skel on user mkdir"
+#   ansible.builtin.lineinfile:
+#     path: "/etc/pam.d/system-auth"
+#     regexp: '^(.*)pam_oddjob_mkhomedir.so$'
+#     line: '\1am_oddjob_mkhomedir.so skel=/etc/skel/ umask=002'
+#     backrefs: true
+#     state: present
