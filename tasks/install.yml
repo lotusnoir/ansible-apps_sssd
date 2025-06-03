@@ -1,4 +1,8 @@
 ---
+- name: "Import tasks for purge"
+  ansible.builtin.include_tasks: "purge.yml"
+  when: sssd_purge_before_install | bool
+
 - name: "Install requirements"
   ansible.builtin.package:
     name: "{{ sssd_pkg }}"
@@ -7,6 +11,18 @@
   retries: 12
   delay: 10
   until: pkg_result is success
+
+- name: "Import tasks for debian"
+  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
+  when: ansible_os_family == 'Debian'
+
+- name: "Import tasks for redhat7"
+  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}7.yml"
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
+
+- name: "Import tasks for redhat >= 8"
+  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version >= '8'
 
 - name: "Configuring sssd"
   ansible.builtin.template:
@@ -20,18 +36,6 @@
     - sssd_conf_domains is defined
     - sssd_conf_domains | length > 0
   notify: Restart sssd
-
-- name: Import tasks for debian
-  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
-  when: ansible_os_family == 'Debian'
-
-- name: Import tasks for redhat7
-  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}7.yml"
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
-
-- name: Import tasks for redhat >= 8
-  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version >= '8'
 
 - name: "Enable and start sssd"
   ansible.builtin.service:

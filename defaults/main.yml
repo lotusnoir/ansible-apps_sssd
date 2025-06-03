@@ -1,4 +1,5 @@
 ---
+sssd_purge_before_install: false
 sssd_unset_apparmor: false
 sssd_pam_devsec_config: false
 sssd_svc_start: true
