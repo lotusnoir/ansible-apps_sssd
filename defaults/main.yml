@@ -29,6 +29,11 @@ sssd_disable_svc_socket: false
 #   aliases:    files nisplus
 
 ### Configuration for all distrib
+# sssd_conf_ifp:
+# sssd_conf_sudo:
+# sssd_conf_autofs:
+# sssd_conf_pac:
+# sssd_conf_session_recording:
 # sssd_conf_domains:
 #   - name: ldap1
 #     content: |
@@ -76,3 +81,4 @@ sssd_disable_svc_socket: false
 #   override_homedir = /home/%u
 #   fallback_homedir = /home/%u
 #   default_shell = /bin/bash
+#
