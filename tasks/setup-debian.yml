@@ -23,6 +23,7 @@
     owner: root
     group: root
     mode: "0644"
+    backup: true
   become: true
   when:
     - sssd_nssswitch_config is defined
@@ -34,7 +35,7 @@
     path: "/etc/pam.d/common-session"
     regexp: "^session required(.*)pam_mkhomedir.so(.*)$"
     line: "session required        pam_mkhomedir.so skel=/etc/skel/ umask={{ sssd_umask }}"
-    insertbefore: '^session(.*)default'
+    insertbefore: "^session(.*)default"
     state: present
   when:
     - sssd_create_homedir is defined
@@ -45,7 +46,7 @@
   ansible.builtin.lineinfile:
     path: "/etc/pam.d/common-session"
     regexp: "^session    optional     pam_umask.so umask=077"
-    insertbefore: '^session optional            pam_sss.so'
+    insertbefore: "^session optional            pam_sss.so"
     line: "session    optional     pam_umask.so umask={{ sssd_umask }}"
     state: present
   when:
@@ -59,7 +60,7 @@
     state: directory
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
   when:
     - sssd_unset_apparmor is defined
     - sssd_unset_apparmor | bool
