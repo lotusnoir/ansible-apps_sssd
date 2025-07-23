@@ -22,6 +22,7 @@
 ## Description
 
 Install and configure sssd in order to connect with ldap support
+
 ## Requirements
 
 none
@@ -80,7 +81,6 @@ With default variables, this role just install the package sssd. You need to set
                   ldap_sudo_search_base = ou=sudo,cn={{ ansible_hostname }},ou=roles,ou=apps,dc=test,dc=fr
                   ldap_id_use_start_tls = True
                   ldap_tls_reqcert = never
-
 
 
 ## License

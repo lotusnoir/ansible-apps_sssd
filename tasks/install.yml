@@ -7,10 +7,10 @@
   ansible.builtin.package:
     name: "{{ sssd_pkg }}"
     state: present
-  register: pkg_result
+  register: __pkg_result
   retries: 12
   delay: 10
-  until: pkg_result is success
+  until: __pkg_result is success
 
 - name: "Import tasks for debian"
   ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
