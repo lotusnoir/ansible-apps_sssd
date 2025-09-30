@@ -4,6 +4,10 @@
     name: sssd
     state: restarted
 
+- name: "Reload systemd"
+  ansible.builtin.systemd:
+    daemon_reload: true
+
 - name: "Restart oddjobd"
   ansible.builtin.service:
     name: oddjobd

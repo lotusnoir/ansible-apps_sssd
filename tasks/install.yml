@@ -38,6 +38,27 @@
     - sssd_conf_domains | length > 0
   notify: Restart sssd
 
+- name: Ensure override directory exists
+  ansible.builtin.file:
+    path: /etc/systemd/system/sssd.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  when:
+    - sssd_svc_override| bool
+
+- name: Deploy override.conf for sssd
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/sssd.service.d/override.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: "{{ sssd_svc_override_content }}"
+  notify: Reload systemd
+  when:
+    - sssd_svc_override| bool
+
 - name: "Enable and start sssd"
   ansible.builtin.service:
     name: sssd

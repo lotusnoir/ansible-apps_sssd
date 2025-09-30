@@ -10,6 +10,15 @@ sssd_change_umask: false
 sssd_umask: "027"
 
 sssd_disable_svc_socket: false
+sssd_svc_override: true
+sssd_svc_override_content: |
+  [Unit]
+  After=network-online.target
+  Wants=network-online.target
+
+  [Service]
+  RuntimeDirectory=sssd
+  RuntimeDirectoryMode=0755
 # sssd_nssswitch_config:
 #   passwd:     files sss
 #   shadow:     files sss
