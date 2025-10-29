@@ -17,6 +17,7 @@ galaxy_info:
         - "buster"
         - "bullseye"
         - "bookworm"
+        - "trixie"
     - name: "OracleLinux"
       versions:
         - "8"
