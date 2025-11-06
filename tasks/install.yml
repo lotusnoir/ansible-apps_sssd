@@ -29,8 +29,8 @@
     src: sssd.conf.j2
     dest: /etc/sssd/sssd.conf
     owner: root
-    group: root
-    mode: "{{ '0640' if (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_major_version'] | int >= 13) else '0600' }}"
+    group: "{{ sssd_conf_group | default('root') }}"
+    mode: "{{ sssd_conf_mode | default('0600') }}"
     backup: true
   become: true
   when:

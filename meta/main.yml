@@ -18,10 +18,14 @@ galaxy_info:
         - "bullseye"
         - "bookworm"
         - "trixie"
+    - name: "Rocky"
+      versions:
+        - "10"
     - name: "OracleLinux"
       versions:
         - "8"
         - "9"
+        - "10"
     - name: "RedHat"
       versions:
         - "8"
