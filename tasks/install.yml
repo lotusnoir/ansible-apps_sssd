@@ -34,6 +34,7 @@
   when:
     - sssd_svc_socket_disable is defined
     - sssd_svc_socket_disable | length > 0
+  notify: Restart sssd
 
 - name: "Configuring sssd"
   ansible.builtin.template:
