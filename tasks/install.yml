@@ -29,7 +29,6 @@
     name: "{{ item }}"
     state: stopped
     enabled: false
-    masked: true
   with_items:
     - "{{ sssd_svc_socket_disable }}"
   when:
