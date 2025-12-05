@@ -24,6 +24,18 @@
   ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version >= '8'
 
+- name: "Disable sssd sockets"
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+    masked: true
+  with_items:
+    - "{{ sssd_svc_socket_disable }}"
+  when:
+    - sssd_svc_socket_disable is defined
+    - sssd_svc_socket_disable | length > 0
+
 - name: "Configuring sssd"
   ansible.builtin.template:
     src: sssd.conf.j2

@@ -1,21 +1,4 @@
 ---
-- name: "DEBIAN | Disable sssd sub sockets"
-  ansible.builtin.service:
-    name: "{{ item }}"
-    enabled: false
-  with_items:
-    - sssd-ssh.socket
-    - sssd-sudo.socket
-    - sssd-nss.socket
-    - sssd-pam.socket
-    - sssd-pam-priv.socket
-    - sssd-pac.socket
-    - sssd-autofs.socket
-  when:
-    - ansible_distribution_release == "bullseye"
-    - sssd_disable_svc_socket is defined
-    - sssd_disable_svc_socket|bool
-
 - name: "DEBIAN | Configuring nsswitch"
   ansible.builtin.template:
     src: nsswitch.conf.j2
