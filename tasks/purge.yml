@@ -6,17 +6,6 @@
     enabled: false
   failed_when: false
 
-- name: Remove SSSD data directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  with_items:
-    - /var/lib/sss/db
-    - /var/lib/sss/mc
-    - /var/lib/sss/pipes
-    - /var/lib/sss/pubconf
-    - /var/log/sssd
-
 - name: Purge SSSD packages on Debian/Ubuntu
   ansible.builtin.apt:
     name: "sssd*"
@@ -32,3 +21,14 @@
     state: absent
     autoremove: "yes"
   when: ansible_os_family == "RedHat"
+
+- name: Remove SSSD data directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/lib/sss
+    - /etc/sssd
+    - /var/log/sssd
+    - /etc/systemd/system/sssd.service.d
+    - /etc/systemd/system/sssd.service
