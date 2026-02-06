@@ -9,10 +9,20 @@
     - "Reload oddjob service"
     - "Start oddjobd"
 
-- name: "REDHAT-8+ | Switch auth provider to sssd"
+- name: "REDHAT-8 | Enable sssd"
   ansible.builtin.command: "authconfig --update --enablesssd --enablesssdauth{% if sssd_create_homedir is sameas true %} --enablemkhomedir{% endif %}"
   changed_when: false
   notify: Restart sssd
+  when: ansible_facts['distribution_major_version'] == "8"
+
+- name: "REDHAT-9+ | Enable SSSD"
+  ansible.builtin.command: >
+    authselect select sssd
+    {% if sssd_create_homedir is sameas true %} with-mkhomedir{% endif %}
+    --force
+  changed_when: false
+  notify: Restart sssd
+  when: ansible_facts['distribution_major_version'] == "9"
 
 - name: "REDHAT-8+ | Clear sssd Cache"
   ansible.builtin.command: "sss_cache -E"
@@ -30,6 +40,7 @@
     name: oddjobd
     enabled: true
     state: started
+
 # - name: "REDHAT-8+ | Add skel on user mkdir"
 #   ansible.builtin.lineinfile:
 #     path: "/etc/pam.d/system-auth"
