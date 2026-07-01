@@ -76,6 +76,11 @@ molecule_rocky10:
     - avx2
   script:
     - MOLECULE_DISTRIB=rocky10 molecule test
+molecule_rocky9:
+  <<: *molecule_job_template
+  image: lotusnoir/molecule_play:2.18.11
+  script:
+    - MOLECULE_DISTRIB=rocky9 molecule test
 molecule_ubuntu20:
   <<: *molecule_job_template
   image: lotusnoir/molecule_play:2.18.11
@@ -116,6 +121,8 @@ changelog:
     - job: molecule_oraclelinux9
       optional: true
     - job: molecule_rocky10
+      optional: true
+    - job: molecule_rocky9
       optional: true
     - job: molecule_ubuntu20
       optional: true
